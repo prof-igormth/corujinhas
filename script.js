@@ -1,4 +1,4 @@
-// --- CONTEÚDO EDUCACIONAL DA UNIDADE 1 ---
+// --- CONTEÚDO EDUCACIONAL DA UNIDADE 1 (Apenas Múltipla Escolha) ---
 const mapData = [
   {
     id: 1, 
@@ -8,8 +8,6 @@ const mapData = [
     offset: "translate-x-0",
     subLessons: [
       {
-        theory: "Educação financeira é aprender a usar o dinheiro de forma inteligente.",
-        type: "quiz",
         question: "O que significa educação financeira?",
         options: [
           { text: "Guardar dinheiro sem gastar", correct: false },
@@ -18,8 +16,6 @@ const mapData = [
         ]
       },
       {
-        theory: "Necessidades são essenciais para viver. Desejos são coisas que queremos, mas não precisamos para sobreviver.",
-        type: "quiz",
         question: "O que é uma necessidade?",
         options: [
           { text: "Um gasto essencial, como comida ou moradia", correct: true },
@@ -28,8 +24,6 @@ const mapData = [
         ]
       },
       {
-        theory: "Um orçamento organiza as entradas (ganhos) e saídas (gastos) do seu dinheiro.",
-        type: "quiz",
         question: "O que é um orçamento?",
         options: [
           { text: "Um plano para organizar entradas e saídas de dinheiro", correct: true },
@@ -38,8 +32,6 @@ const mapData = [
         ]
       },
       {
-        theory: "Poupar é guardar uma parte do dinheiro hoje para garantir o seu futuro.",
-        type: "quiz",
         question: "Qual é a regra simples para começar a poupar?",
         options: [
           { text: "Gastar tudo e guardar se sobrar", correct: false },
@@ -48,8 +40,6 @@ const mapData = [
         ]
       },
       {
-        theory: "Planejar é pensar no futuro e organizar metas de curto, médio e longo prazo.",
-        type: "quiz",
         question: "Qual das opções é uma meta de longo prazo?",
         options: [
           { text: "Comprar um celular novo", correct: false },
@@ -67,7 +57,6 @@ const mapData = [
 let userState = { currentLevel: 1, gems: 0, energy: 5 };
 let activeNodeId = null;
 let currentSubIndex = 0;
-let currentPhase = 0;
 let selectedOption = null;
 
 function goToScreen(screenId) {
@@ -142,7 +131,6 @@ function startLesson() {
   }
 
   currentSubIndex = 0;
-  currentPhase = 0;
   document.getElementById('lesson-energy').innerText = userState.energy;
   goToScreen('screen-lesson');
   renderLessonPhase();
@@ -155,53 +143,28 @@ function renderLessonPhase() {
   const btn = document.getElementById('btn-lesson-action');
   const progress = document.getElementById('lesson-progress');
   
-  const totalSteps = node.subLessons.length * 2;
-  const currentStep = (currentSubIndex * 2) + currentPhase;
-  progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+  const totalSteps = node.subLessons.length;
+  progress.style.width = `${(currentSubIndex / totalSteps) * 100}%`;
   
-  btn.disabled = false;
+  btn.disabled = true;
   selectedOption = null;
 
-  let html = '';
-
-  if (currentPhase === 0) {
-    // Fase 0: Removido o campo de digitação. Agora é apenas a Corujinha ensinando.
-    html = `
-      <div class="fade-in flex flex-col h-full justify-center pb-12">
-        <h1 class="text-2xl font-black text-[#1C2A4D] mb-8 tracking-tight text-center opacity-40 uppercase text-sm">Lição ${currentSubIndex + 1} de 5</h1>
-        
-        <div class="flex gap-4 items-center">
-          <div class="text-[4rem]">🦉</div>
-          <div class="border-2 border-gray-200 rounded-2xl p-5 bg-white relative flex-1 shadow-sm">
-            <div class="absolute w-4 h-4 border-l-2 border-b-2 border-gray-200 bg-white rotate-45 -left-[9px] top-1/2 -translate-y-1/2"></div>
-            <p class="text-[18px] text-[#1C2A4D] font-bold leading-relaxed">${subLesson.theory}</p>
-          </div>
-        </div>
+  let html = `
+    <div class="fade-in">
+      <h1 class="text-2xl font-black text-[#1C2A4D] mb-6 leading-tight">${subLesson.question}</h1>
+      <div class="space-y-3" id="quiz-options">
+        ${subLesson.options.map((opt, i) => `
+          <button onclick="selectOption(${i}, ${opt.correct})" class="quiz-btn btn-3d w-full p-4 border-2 border-gray-200 rounded-2xl text-left font-bold text-[17px] text-[#1C2A4D] transition-colors">
+            ${opt.text}
+          </button>
+        `).join('')}
       </div>
-    `;
-    btn.innerText = "Entendi";
-    btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-white bg-[#7A5CA0] border-[#7A5CA0] border-b-[#4C5DAA]";
-  } 
-  else if (currentPhase === 1) {
-    // Fase 1: O Quiz de múltipla escolha
-    if (subLesson.type === 'quiz') {
-      html = `
-        <div class="fade-in">
-          <h1 class="text-2xl font-black text-[#1C2A4D] mb-6 leading-tight">${subLesson.question}</h1>
-          <div class="space-y-3" id="quiz-options">
-            ${subLesson.options.map((opt, i) => `
-              <button onclick="selectOption(${i}, ${opt.correct})" class="quiz-btn btn-3d w-full p-4 border-2 border-gray-200 rounded-2xl text-left font-bold text-[17px] text-[#1C2A4D] transition-colors">
-                ${opt.text}
-              </button>
-            `).join('')}
-          </div>
-        </div>
-      `;
-      btn.disabled = true;
-      btn.innerText = "Verificar";
-      btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-gray-400 bg-[#e5e5e5] border-[#e5e5e5]";
-    } 
-  }
+    </div>
+  `;
+  
+  btn.innerText = "Verificar";
+  btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-gray-400 bg-[#e5e5e5] border-[#e5e5e5]";
+  
   container.innerHTML = html;
 }
 
@@ -218,17 +181,7 @@ function selectOption(index, isCorrect) {
 }
 
 function advanceLesson() {
-  const node = mapData.find(n => n.id === activeNodeId);
-  const subLesson = node.subLessons[currentSubIndex];
-  
-  if (currentPhase === 0) {
-    currentPhase = 1;
-    renderLessonPhase();
-  } else {
-    if (subLesson.type === 'quiz') {
-      showFeedbackOverlay(selectedOption);
-    }
-  }
+  showFeedbackOverlay(selectedOption);
 }
 
 function showFeedbackOverlay(isCorrect) {
@@ -300,7 +253,6 @@ function advancePhase() {
     document.getElementById('lesson-progress').style.width = '100%';
     setTimeout(() => goToScreen('screen-success'), 300);
   } else {
-    currentPhase = 0;
     renderLessonPhase();
   }
 }
@@ -318,4 +270,5 @@ function finishNode() {
   goToScreen('screen-map');
 }
 
+// Inicia o app
 goToScreen('screen-welcome');
