@@ -1,0 +1,122 @@
+body {
+  font-family: 'Nunito', sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #e5e5e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Container do App - Responsivo Celular/PC */
+.app-container {
+  width: 100%;
+  max-width: 480px; 
+  height: 100dvh;
+  background-color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,0.15);
+}
+
+@media (min-width: 600px) {
+  .app-container {
+    height: 90dvh;
+    border-radius: 24px;
+    border: 4px solid #ffffff;
+  }
+}
+
+/* Efeitos 3D */
+.btn-3d {
+  border-bottom-width: 4px;
+  transition: all 0.1s;
+}
+.btn-3d:active:not(:disabled) {
+  border-bottom-width: 0px;
+  transform: translateY(4px);
+}
+.btn-3d:disabled {
+  background-color: #e5e5e5 !important; border-color: #cecece !important;
+  color: #afafaf !important; cursor: not-allowed;
+}
+
+/* Nós do Mapa */
+.node-3d {
+  border-bottom-width: 8px;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.node-3d:active:not(:disabled) {
+  border-bottom-width: 0px; transform: translateY(8px) scale(0.95);
+}
+
+.node-locked { background-color: #e5e5e5; border-color: #cecece; color: #afafaf; }
+.node-completed { background-color: #F4C542; border-color: #d4a522; color: #ffffff; }
+
+/* Nó Atual - LILÁS / ROXO MÉDIO */
+.node-current {
+  background-color: #7A5CA0; border-color: #4C5DAA; color: #ffffff;
+  box-shadow: 0 0 0 8px rgba(122, 92, 160, 0.2);
+  animation: pulse-node 2s infinite;
+}
+
+@keyframes pulse-node {
+  0% { box-shadow: 0 0 0 0 rgba(122, 92, 160, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(122, 92, 160, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(122, 92, 160, 0); }
+}
+
+/* Animações */
+.fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.bounce-mascot { animation: bounceMascot 2s infinite ease-in-out; }
+@keyframes bounceMascot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.progress-bar-fill { transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Flashcard */
+.flashcard { perspective: 1000px; cursor: pointer; height: 220px; width: 100%; }
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%; text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d;
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back {
+  position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  border-radius: 1rem; border: 2px solid #e5e5e5; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+.flashcard-front { background-color: white; }
+.flashcard-back { background-color: #f7f3fa; border-color: #7A5CA0; transform: rotateY(180deg); color: #7A5CA0; }
+
+/* MODAIS ABSOLUTOS */
+.bottom-sheet {
+  position: absolute; bottom: 0; left: 0; width: 100%;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 60;
+  border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem;
+}
+.bottom-sheet.show { transform: translateY(0); }
+
+.overlay { 
+  position: absolute; inset: 0; background-color: rgba(28, 42, 77, 0.7);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 50;
+}
+.overlay.show { opacity: 1; pointer-events: auto; }
+
+::-webkit-scrollbar { display: none; }
+
+/* TELAS DO APP */
+.screen { 
+  display: none !important; 
+  position: absolute; inset: 0; flex-direction: column; 
+  background-color: #ffffff; z-index: 10;
+}
+.screen.active { display: flex !important; z-index: 20; }
