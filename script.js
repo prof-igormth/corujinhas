@@ -1,274 +1,143 @@
-// --- CONTEÚDO EDUCACIONAL DA UNIDADE 1 (Apenas Múltipla Escolha) ---
-const mapData = [
+const dadosMapa = [
   {
-    id: 1, 
-    icon: "⭐", 
-    title: "O que é Educação Financeira?", 
-    desc: "Aprenda a usar o dinheiro de forma inteligente.", 
-    offset: "translate-x-0",
-    subLessons: [
-      {
-        question: "O que significa educação financeira?",
-        options: [
-          { text: "Guardar dinheiro sem gastar", correct: false },
-          { text: "Aprender a usar o dinheiro de forma inteligente", correct: true },
-          { text: "Comprar apenas o que gosta", correct: false }
-        ]
-      },
-      {
-        question: "O que é uma necessidade?",
-        options: [
-          { text: "Um gasto essencial, como comida ou moradia", correct: true },
-          { text: "Comprar a roupa da moda", correct: false },
-          { text: "Um passeio no fim de semana", correct: false }
-        ]
-      },
-      {
-        question: "O que é um orçamento?",
-        options: [
-          { text: "Um plano para organizar entradas e saídas de dinheiro", correct: true },
-          { text: "Uma lista de desejos e sonhos", correct: false },
-          { text: "Um tipo de investimento no banco", correct: false }
-        ]
-      },
-      {
-        question: "Qual é a regra simples para começar a poupar?",
-        options: [
-          { text: "Gastar tudo e guardar se sobrar", correct: false },
-          { text: "Guardar pelo menos 10% da sua renda", correct: true },
-          { text: "Pedir dinheiro emprestado", correct: false }
-        ]
-      },
-      {
-        question: "Qual das opções é uma meta de longo prazo?",
-        options: [
-          { text: "Comprar um celular novo", correct: false },
-          { text: "Fazer uma viagem no próximo ano", correct: false },
-          { text: "Comprar uma casa", correct: true }
-        ]
-      }
+    id: 1, icon: "⭐", titulo: "Conceitos Básicos", desc: "Aprenda a lidar com o dinheiro.", offset: "translate-x-0",
+    licoes: [
+      { pergunta: "O que significa educação financeira?", opcoes: [{ texto: "Guardar dinheiro", correta: false }, { texto: "Usar dinheiro com inteligência", correta: true }, { texto: "Comprar tudo que vê", correta: false }] },
+      { pergunta: "O que é uma necessidade?", opcoes: [{ texto: "Gasto essencial (comida)", correta: true }, { texto: "Roupa de marca", correta: false }, { texto: "Viagem cara", correta: false }] },
+      { pergunta: "O que é um orçamento?", opcoes: [{ texto: "Plano de ganhos e gastos", correta: true }, { texto: "Lista de desejos", correta: false }, { texto: "Cartão de crédito", correta: false }] },
+      { pergunta: "Quanto devemos poupar?", opcoes: [{ texto: "Nada", correta: false }, { texto: "Pelo menos 10%", correta: true }, { texto: "Tudo o que ganha", correta: false }] },
+      { pergunta: "O que é meta de longo prazo?", opcoes: [{ texto: "Lanche de hoje", correta: false }, { texto: "Festa amanhã", correta: false }, { texto: "Compra da casa", correta: true }] }
     ]
   },
-  // Nós decorativos (Prontos para receberem lições depois)
-  { id: 2, icon: "📖", title: "Leitura de Boletos", desc: "Evite juros e taxas.", offset: "-translate-x-12", subLessons: [] },
-  { id: 3, icon: "🎧", title: "Histórias Reais", desc: "Ouça e aprenda com erros.", offset: "-translate-x-20", subLessons: [] }
+  { id: 2, icon: "📖", titulo: "Leitura de Boletos", desc: "Evite juros e taxas.", offset: "translate-x-10", licoes: [] }
 ];
 
-let userState = { currentLevel: 1, gems: 0, energy: 5 };
-let activeNodeId = null;
-let currentSubIndex = 0;
-let selectedOption = null;
+let estadoUsuario = JSON.parse(localStorage.getItem('corujinha_final')) || { 
+  nivelAtual: 1, licaoAtual: 0, gemas: 0, energia: 5, ultimaPerdaEnergia: null 
+};
 
-function goToScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
-  if (screenId === 'screen-map') { renderMap(); updateTopBar(); }
+let faseId = null, indiceLocal = 0, selecionada = null, timer = null;
+
+function salvar() { localStorage.setItem('corujinha_final', JSON.stringify(estadoUsuario)); }
+
+function mudarTela(id) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+  const h = document.getElementById('cabecalho');
+  const semH = ['tela-inicio', 'tela-diagnostico', 'tela-licao', 'tela-sucesso'];
+  semH.includes(id) ? h.classList.add('escondido') : h.classList.remove('escondido');
+  if (id === 'tela-mapa') { desenharMapa(); atualizarTopo(); verificarEnergia(); }
 }
 
-function updateTopBar() {
-  document.getElementById('ui-gems').innerText = userState.gems;
-  document.getElementById('ui-energy').innerText = userState.energy;
+function atualizarTopo() {
+  document.getElementById('texto-gemas').innerText = estadoUsuario.gemas;
+  document.getElementById('texto-energia').innerText = estadoUsuario.energia;
 }
 
-function renderMap() {
-  const container = document.getElementById('journey-path');
-  container.innerHTML = '';
-
-  mapData.forEach((node) => {
-    const isCompleted = node.id < userState.currentLevel;
-    const isCurrent = node.id === userState.currentLevel;
-    const isLocked = node.id > userState.currentLevel;
-
-    let btnClasses = isLocked ? 'node-locked' : isCompleted ? 'node-completed' : 'node-current';
-    let displayIcon = isLocked ? '🔒' : isCompleted ? '✔️' : node.icon;
-
-    const nodeHTML = `
-      <div class="relative w-full flex justify-center py-3">
-        <div class="${node.offset} relative">
-          ${isCurrent ? `<div class="absolute -top-14 left-1/2 -translate-x-1/2 bg-white border-2 border-gray-200 text-[#7A5CA0] font-black uppercase text-sm px-4 py-2 rounded-xl shadow-sm z-10 whitespace-nowrap animate-bounce tracking-wider">COMEÇAR<div class="absolute w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white border-b-0 -bottom-[8px] left-1/2 -translate-x-1/2"></div></div>` : ''}
-          <button onclick="openSheet(${node.id})" ${isLocked ? 'disabled' : ''} class="node-3d w-[76px] h-[76px] text-[32px] rounded-full flex items-center justify-center border-2 ${btnClasses} shadow-sm z-10">
-            ${displayIcon}
-          </button>
-        </div>
-      </div>
-    `;
-    container.insertAdjacentHTML('beforeend', nodeHTML);
-  });
-}
-
-function openSheet(id) {
-  if (id > userState.currentLevel) return;
-  activeNodeId = id;
-  const node = mapData.find(n => n.id === id);
-  const isCompleted = id < userState.currentLevel;
-  
-  document.getElementById('sheet-title').innerText = node.title;
-  document.getElementById('sheet-desc').innerText = node.desc;
-  
-  const btn = document.getElementById('btn-start-node');
-  if (isCompleted) {
-    btn.innerText = "REVISAR";
-    btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-[#7A5CA0] bg-white border-2 border-gray-200 border-b-[4px] border-b-gray-300 active:border-b-0";
-  } else {
-    btn.innerText = "COMEÇAR";
-    btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-white bg-[#7A5CA0] border-[#7A5CA0] border-b-[4px] border-b-[#4C5DAA]";
-  }
-
-  document.getElementById('modal-overlay').classList.add('show');
-  document.getElementById('bottom-sheet').classList.add('show');
-}
-
-function closeSheet() {
-  document.getElementById('modal-overlay').classList.remove('show');
-  document.getElementById('bottom-sheet').classList.remove('show');
-}
-
-function startLesson() {
-  closeSheet();
-  const node = mapData.find(n => n.id === activeNodeId);
-  if(!node.subLessons || node.subLessons.length === 0) {
-      alert("Nó em desenvolvimento."); return;
-  }
-
-  currentSubIndex = 0;
-  document.getElementById('lesson-energy').innerText = userState.energy;
-  goToScreen('screen-lesson');
-  renderLessonPhase();
-}
-
-function renderLessonPhase() {
-  const node = mapData.find(n => n.id === activeNodeId);
-  const subLesson = node.subLessons[currentSubIndex];
-  const container = document.getElementById('lesson-content-area');
-  const btn = document.getElementById('btn-lesson-action');
-  const progress = document.getElementById('lesson-progress');
-  
-  const totalSteps = node.subLessons.length;
-  progress.style.width = `${(currentSubIndex / totalSteps) * 100}%`;
-  
-  btn.disabled = true;
-  selectedOption = null;
-
-  let html = `
-    <div class="fade-in">
-      <h1 class="text-2xl font-black text-[#1C2A4D] mb-6 leading-tight">${subLesson.question}</h1>
-      <div class="space-y-3" id="quiz-options">
-        ${subLesson.options.map((opt, i) => `
-          <button onclick="selectOption(${i}, ${opt.correct})" class="quiz-btn btn-3d w-full p-4 border-2 border-gray-200 rounded-2xl text-left font-bold text-[17px] text-[#1C2A4D] transition-colors">
-            ${opt.text}
-          </button>
-        `).join('')}
-      </div>
-    </div>
-  `;
-  
-  btn.innerText = "Verificar";
-  btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-gray-400 bg-[#e5e5e5] border-[#e5e5e5]";
-  
-  container.innerHTML = html;
-}
-
-function selectOption(index, isCorrect) {
-  selectedOption = isCorrect;
-  const btns = document.querySelectorAll('.quiz-btn');
-  btns.forEach(b => b.className = "quiz-btn btn-3d w-full p-4 border-2 border-gray-200 rounded-2xl text-left font-bold text-[17px] text-[#1C2A4D]");
-  
-  btns[index].className = "quiz-btn btn-3d w-full p-4 border-2 border-[#7A5CA0] border-b-[4px] bg-[#BCA6D3]/20 rounded-2xl text-left font-bold text-[17px] text-[#7A5CA0]";
-  
-  const btn = document.getElementById('btn-lesson-action');
-  btn.disabled = false;
-  btn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-white bg-[#7A5CA0] border-[#7A5CA0] border-b-[#4C5DAA]";
-}
-
-function advanceLesson() {
-  showFeedbackOverlay(selectedOption);
-}
-
-function showFeedbackOverlay(isCorrect) {
-  const overlay = document.getElementById('feedback-overlay');
-  const icon = document.getElementById('feedback-icon');
-  const title = document.getElementById('feedback-title');
-  const btnFk = document.getElementById('btn-feedback-continue');
-  
-  if (isCorrect) {
-    userState.energy = Math.min(5, userState.energy + 1);
-    document.getElementById('lesson-energy').innerText = userState.energy;
-
-    overlay.className = "bottom-sheet bg-[#d7ffb8] text-[#58a700] p-6 pb-10 flex flex-col gap-4 show";
-    icon.innerHTML = "✓"; 
-    icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-4xl font-black bg-[#58cc02] text-white";
-    title.innerText = "Excelente! +1 ⚡";
-    
-    btnFk.innerText = "Continuar";
-    btnFk.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-white bg-[#58cc02] border-[#58cc02] border-b-[#58a700]";
-    btnFk.onclick = advancePhase; 
-  } else {
-    userState.energy = Math.max(0, userState.energy - 1);
-    document.getElementById('lesson-energy').innerText = userState.energy;
-    
-    if(userState.energy === 0) {
-      overlay.className = "bottom-sheet bg-[#1C2A4D] text-white p-6 pb-10 flex flex-col gap-4 show";
-      icon.innerHTML = "💔"; 
-      icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-4xl font-black bg-[#F4C542] text-[#1C2A4D]";
-      title.innerText = "Acabaram suas energias!";
-      
-      btnFk.innerText = "Voltar ao Mapa";
-      btnFk.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-[#1C2A4D] bg-[#F4C542] border-[#F4C542] border-b-[#c99f31]";
-      btnFk.onclick = () => {
-         userState.energy = 5; 
-         quitLesson(); 
-      };
-    } else {
-      overlay.className = "bottom-sheet bg-[#ffdfe0] text-[#ea2b2b] p-6 pb-10 flex flex-col gap-4 show";
-      icon.innerHTML = "✕"; 
-      icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-4xl font-black bg-[#ea2b2b] text-white";
-      title.innerText = "Ops! Incorreto.";
-      
-      btnFk.innerText = "Tentar Novamente";
-      btnFk.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-white bg-[#ff4b4b] border-[#ff4b4b] border-b-[#ea2b2b]";
-      btnFk.onclick = retryPhase; 
+function verificarEnergia() {
+  if (estadoUsuario.energia <= 0 && estadoUsuario.ultimaPerdaEnergia) {
+    const agora = new Date().getTime(), diff = agora - estadoUsuario.ultimaPerdaEnergia, dia = 86400000;
+    if (diff >= dia) { 
+        estadoUsuario.energia = 5; estadoUsuario.ultimaPerdaEnergia = null; salvar(); atualizarTopo(); 
+    } else { 
+        iniciarTimer(dia - diff); 
     }
   }
 }
 
-function retryPhase() {
-  document.getElementById('feedback-overlay').classList.remove('show');
-  
-  selectedOption = null;
-  const btns = document.querySelectorAll('.quiz-btn');
-  btns.forEach(b => b.className = "quiz-btn btn-3d w-full p-4 border-2 border-gray-200 rounded-2xl text-left font-bold text-[17px] text-[#1C2A4D] transition-colors");
-  
-  const mainBtn = document.getElementById('btn-lesson-action');
-  mainBtn.disabled = true;
-  mainBtn.innerText = "Verificar";
-  mainBtn.className = "btn-3d w-full py-3.5 rounded-2xl font-black text-[17px] uppercase tracking-wider text-gray-400 bg-[#e5e5e5] border-[#e5e5e5]";
+function iniciarTimer(duracao) {
+  clearInterval(timer);
+  const campo = document.getElementById('relogio-energia');
+  timer = setInterval(() => {
+    let h = Math.floor(duracao / 3600000), m = Math.floor((duracao % 3600000) / 60000), s = Math.floor((duracao % 60000) / 1000);
+    campo.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    duracao -= 1000;
+    if (duracao < 0) { clearInterval(timer); estadoUsuario.energia = 5; salvar(); fecharAvisoEnergia(); atualizarTopo(); }
+  }, 1000);
 }
 
-function advancePhase() {
-  document.getElementById('feedback-overlay').classList.remove('show');
-  currentSubIndex++;
-  
-  const node = mapData.find(n => n.id === activeNodeId);
-  if (currentSubIndex >= node.subLessons.length) {
-    document.getElementById('lesson-progress').style.width = '100%';
-    setTimeout(() => goToScreen('screen-success'), 300);
+function desenharMapa() {
+  const container = document.getElementById('caminho-trilha');
+  container.innerHTML = '';
+  dadosMapa.forEach(f => {
+    const comp = f.id < estadoUsuario.nivelAtual, curr = f.id === estadoUsuario.nivelAtual, lock = f.id > estadoUsuario.nivelAtual;
+    let moedas = '<div class="flex gap-1 mt-2">';
+    for(let i=0; i<5; i++) {
+      let cor = (comp || (curr && i < estadoUsuario.licaoAtual)) ? "bg-[#F4C542] border-[#d4a522]" : "bg-[#BCA6D3] border-[#7A5CA0]";
+      moedas += `<div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border ${cor}"></div>`;
+    }
+    moedas += '</div>';
+    container.insertAdjacentHTML('beforeend', `
+      <div class="relative w-full flex justify-center py-3">
+        <div class="${f.offset} flex flex-col items-center">
+          <button onclick="abrirGaveta(${f.id})" ${lock?'disabled':''} class="circulo-fase w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 ${lock?'fase-bloqueada':comp?'fase-concluida':'fase-atual'} text-xl sm:text-2xl flex items-center justify-center">${lock?'🔒':comp?'✔️':f.icon}</button>
+          ${moedas}
+        </div>
+      </div>`);
+  });
+}
+
+function abrirGaveta(id) {
+  if (estadoUsuario.energia <= 0) { mostrarAvisoEnergia(); return; }
+  faseId = id; const f = dadosMapa.find(x => x.id === id);
+  document.getElementById('titulo-gaveta').innerText = f.titulo;
+  document.getElementById('desc-gaveta').innerText = f.desc;
+  document.getElementById('fundo-escuro').classList.add('visivel');
+  document.getElementById('gaveta-mapa').classList.add('visivel');
+}
+
+function comecarLicao() {
+  fecharGaveta();
+  indiceLocal = (faseId === estadoUsuario.nivelAtual) ? estadoUsuario.licaoAtual : 0;
+  mudarTela('tela-licao');
+  renderizar();
+}
+
+function renderizar() {
+  const f = dadosMapa.find(x => x.id === faseId), l = f.licoes[indiceLocal];
+  document.getElementById('barra-progresso').style.width = `${(indiceLocal/f.licoes.length)*100}%`;
+  document.getElementById('energia-licao').innerText = estadoUsuario.energia;
+  document.getElementById('botao-acao-licao').disabled = true;
+  document.getElementById('area-pergunta').innerHTML = `
+    <h1 class="text-lg sm:text-xl font-black mb-6 text-center">${l.pergunta}</h1>
+    <div class="space-y-3">${l.opcoes.map((o,i)=>`<button onclick="selecionar(${i},${o.correta})" class="opcao-pergunta botao-3d w-full p-4 border-2 rounded-2xl text-left font-bold border-gray-200 text-[#1C2A4D] text-sm sm:text-base">${o.texto}</button>`).join('')}</div>`;
+}
+
+function selecionar(i, correta) {
+  selecionada = correta;
+  document.querySelectorAll('.opcao-pergunta').forEach(b => b.classList.remove('bg-[#BCA6D3]/20', 'border-[#7A5CA0]'));
+  document.querySelectorAll('.opcao-pergunta')[i].classList.add('bg-[#BCA6D3]/20', 'border-[#7A5CA0]');
+  document.getElementById('botao-acao-licao').disabled = false;
+}
+
+function avancarLicao() {
+  const o = document.getElementById('aviso-resultado'), i = document.getElementById('icone-resultado'), t = document.getElementById('titulo-resultado'), b = document.getElementById('botao-continuar-resultado');
+  if (selecionada) {
+    o.className = "gaveta-baixo bg-[#d7ffb8] text-[#58a700] p-6 pb-10 visivel";
+    i.innerHTML = "✓"; i.className = "w-12 h-12 rounded-full flex items-center justify-center bg-[#58cc02] text-white";
+    t.innerText = "Excelente!"; b.className = "botao-3d w-full py-3.5 rounded-2xl font-black text-white bg-[#58cc02]";
+    b.onclick = () => {
+      o.classList.remove('visivel');
+      if (faseId === estadoUsuario.nivelAtual) { estadoUsuario.licaoAtual++; estadoUsuario.gemas += 5; }
+      if (estadoUsuario.licaoAtual >= 5) mudarTela('tela-sucesso'); else mudarTela('tela-mapa');
+      salvar();
+    };
   } else {
-    renderLessonPhase();
+    estadoUsuario.energia--; if (estadoUsuario.energia <= 0) estadoUsuario.ultimaPerdaEnergia = new Date().getTime();
+    salvar(); atualizarTopo();
+    o.className = "gaveta-baixo bg-[#ffdfe0] text-[#ea2b2b] p-6 pb-10 visivel";
+    i.innerHTML = "✕"; i.className = "w-12 h-12 rounded-full flex items-center justify-center bg-[#ea2b2b] text-white";
+    t.innerText = estadoUsuario.energia <= 0 ? "Energia Esgotada!" : "Ops! Incorreto.";
+    b.className = "botao-3d w-full py-3.5 rounded-2xl font-black text-white bg-[#ea2b2b]";
+    b.onclick = () => { o.classList.remove('visivel'); if (estadoUsuario.energia <= 0) { mudarTela('tela-mapa'); mostrarAvisoEnergia(); } else renderizar(); };
   }
 }
 
-function quitLesson() {
-  document.getElementById('feedback-overlay').classList.remove('show');
-  goToScreen('screen-map');
-}
+function mostrarAvisoEnergia() { document.getElementById('aviso-energia').classList.add('visivel'); verificarEnergia(); }
+function fecharAvisoEnergia() { document.getElementById('aviso-energia').classList.remove('visivel'); }
+function fecharGaveta() { document.getElementById('fundo-escuro').classList.remove('visivel'); document.getElementById('gaveta-mapa').classList.remove('visivel'); }
+function sairDaLicao() { mudarTela('tela-mapa'); }
+function finalizarFase() { estadoUsuario.nivelAtual++; estadoUsuario.licaoAtual = 0; estadoUsuario.gemas += 15; salvar(); mudarTela('tela-mapa'); }
+function verAnuncio() { alert("📺 Exibindo anúncio..."); setTimeout(() => { estadoUsuario.energia = Math.min(5, estadoUsuario.energia + 1); salvar(); atualizarTopo(); if(estadoUsuario.energia > 0) fecharAvisoEnergia(); }, 1000); }
 
-function finishNode() {
-  if (activeNodeId === userState.currentLevel) {
-    userState.gems += 15;
-    userState.currentLevel++;
-  }
-  goToScreen('screen-map');
-}
-
-// Inicia o app
-goToScreen('screen-welcome');
+mudarTela('tela-inicio');
