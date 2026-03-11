@@ -14,15 +14,19 @@
     <header id="cabecalho" class="escondido bg-white/95 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b-2 border-gray-100 z-30">
       <div class="flex items-center font-black text-[#7A5CA0] text-2xl">🦉</div>
       <div class="flex gap-4">
-        <div class="flex items-center gap-1.5 font-bold text-[#6FB7E9]"><span class="text-xl">💎</span> <span id="texto-gemas">0</span></div>
-        <div class="flex items-center gap-1.5 font-bold text-[#F4C542]"><span class="text-xl">⚡</span> <span id="texto-energia">5</span></div>
+        <div class="flex items-center gap-1.5 font-bold text-[#6FB7E9]">
+          <span class="text-xl">💎</span> <span id="texto-gemas">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 font-bold text-[#F4C542]">
+          <span class="text-xl">⚡</span> <span id="texto-energia">5</span>
+        </div>
       </div>
     </header>
 
     <div id="tela-inicio" class="tela ativa p-6 justify-center items-center text-center">
       <div class="text-[clamp(4rem,15vw,6rem)] mb-6 coruja-pulando">🦉🧮</div>
       <h1 class="text-[clamp(1.2rem,5vw,1.6rem)] font-black text-[#1C2A4D] mb-8 leading-tight">Vamos descobrir o melhor ponto para começar sua jornada financeira!</h1>
-      <div class="w-full max-w-sm space-y-4">
+      <div class="w-full max-w-sm space-y-4 mx-auto">
         <button onclick="mudarTela('tela-mapa')" class="botao-3d w-full p-4 rounded-2xl text-left bg-white border-2 border-gray-200 flex flex-col gap-1">
           <span class="font-black text-[#7A5CA0] text-lg">Começar do zero</span>
           <span class="text-[#1C2A4D] opacity-70 font-semibold text-xs sm:text-sm">Aprenda os conceitos básicos, passo a passo.</span>
@@ -37,7 +41,7 @@
     <div id="tela-diagnostico" class="tela p-6 justify-center items-center text-center bg-[#BCA6D3]/20">
       <div class="text-[clamp(4rem,15vw,6rem)] mb-4 coruja-pulando">🦉🪙</div>
       <h1 class="text-[clamp(1.2rem,5vw,1.6rem)] font-black text-[#7A5CA0] mb-8">O que você entende sobre finanças?</h1>
-      <div class="w-full max-w-sm space-y-3">
+      <div class="w-full max-w-sm space-y-3 mx-auto">
         <button onclick="mudarTela('tela-mapa')" class="botao-3d w-full p-4 rounded-2xl font-bold text-[#1C2A4D] bg-white border-2 border-gray-200">Não sei nada</button>
         <button onclick="mudarTela('tela-mapa')" class="botao-3d w-full p-4 rounded-2xl font-bold text-[#1C2A4D] bg-white border-2 border-gray-200">Sei o básico</button>
         <button onclick="mudarTela('tela-mapa')" class="botao-3d w-full p-4 rounded-2xl font-bold text-[#1C2A4D] bg-white border-2 border-gray-200">Consigo me organizar</button>
@@ -48,7 +52,7 @@
       <main class="flex-1 overflow-y-auto pb-28 scroll-suave">
         <div class="bg-[#7A5CA0] text-white p-5 rounded-b-3xl mb-6 shadow-sm">
           <h2 class="text-xs font-black uppercase opacity-90 tracking-widest mb-1">Seção 1, Unidade 1</h2>
-          <h1 class="text-xl font-extrabold leading-tight">Educação Financeira</h1>
+          <h1 class="text-xl font-extrabold leading-tight">Jornada da Corujinha</h1>
         </div>
         <div id="caminho-trilha" class="flex flex-col items-center relative w-full py-4 space-y-4"></div>
       </main>
@@ -76,23 +80,20 @@
       <div class="flex-1 w-full flex flex-col items-center justify-center">
         <div class="text-[clamp(5rem,20vw,8rem)] mb-6 coruja-pulando">🏆</div>
         <h1 class="text-3xl font-black text-[#F4C542] mb-2">Unidade Concluída!</h1>
-        <p class="text-[#6FB7E9] font-black text-xl">+15 Gemas de Bônus</p>
+        <p class="text-[#6FB7E9] font-black text-xl">+1 Diamante</p>
       </div>
       <button onclick="finalizarFase()" class="botao-3d w-full py-4 rounded-2xl font-black text-white bg-[#7A5CA0] border-[#7A5CA0] border-b-[#4C5DAA] mb-8">
-        Continuar
+        Continuar para a Próxima Fase
       </button>
     </div>
 
     <div id="fundo-escuro" class="fundo-preto" onclick="fecharGaveta()"></div>
-    
     <div id="gaveta-mapa" class="gaveta-baixo bg-white flex flex-col pt-2 shadow-2xl">
       <div class="w-12 h-1.5 bg-[#BCA6D3] rounded-full mx-auto my-3"></div>
       <div class="p-6 pb-8 text-center area-segura-baixo">
         <h2 id="titulo-gaveta" class="text-2xl font-black text-[#1C2A4D] mb-1">Título</h2>
         <p id="desc-gaveta" class="text-slate-500 font-bold mb-6">Descrição</p>
-        <button id="botao-iniciar-fase" onclick="comecarLicao()" class="botao-3d w-full py-3.5 rounded-2xl font-black text-white bg-[#7A5CA0] border-[#7A5CA0] border-b-[#4C5DAA]">
-          COMEÇAR
-        </button>
+        <button id="botao-iniciar-fase" onclick="comecarLicao()" class="botao-3d w-full py-3.5 rounded-2xl font-black text-white bg-[#7A5CA0] border-[#7A5CA0] border-b-[#4C5DAA]">COMEÇAR</button>
       </div>
     </div>
 
@@ -107,14 +108,12 @@
     <div id="aviso-energia" class="fundo-preto flex items-center justify-center p-4 text-center">
       <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl max-w-sm w-full border-4 border-[#F4C542]">
         <div class="text-5xl sm:text-6xl mb-4">💔</div>
-        <h2 class="text-xl sm:text-2xl font-black text-[#1C2A4D] mb-2 text-center">Energia Esgotada!</h2>
+        <h2 class="text-xl sm:text-2xl font-black text-[#1C2A4D] mb-2">Energia Esgotada!</h2>
         <div class="bg-slate-100 rounded-2xl p-4 mb-6">
           <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Recarga em</p>
           <p id="relogio-energia" class="text-xl sm:text-2xl font-black text-[#7A5CA0]">24:00:00</p>
         </div>
-        <button onclick="verAnuncio()" class="botao-3d w-full py-3.5 rounded-2xl font-black bg-[#6FB7E9] border-[#6FB7E9] border-b-[#4C5DAA] text-white mb-3">
-          📺 Ganhar 1 Energia (Anúncio)
-        </button>
+        <button onclick="verAnuncio()" class="botao-3d w-full py-3.5 rounded-2xl font-black bg-[#6FB7E9] border-[#6FB7E9] border-b-[#4C5DAA] text-white mb-3">📺 Ganhar 1 Energia</button>
         <button onclick="fecharAvisoEnergia()" class="text-slate-400 font-black uppercase text-xs">Aguardar</button>
       </div>
     </div>
