@@ -1,6 +1,6 @@
-// --- DADOS DO MAPA (8 NÓS / 40 LIÇÕES DA PLANILHA) ---
+// --- DADOS DO MAPA (8 NÍVEIS / 40 LIÇÕES DA PLANILHA) ---
 const dadosMapa = [
-  { "id": 1, "icon": "⭐", "titulo": "Fundamentos I", "desc": "Entenda renda, despesa e o básico.", "offset": "translate-x-0",
+  { "id": 1, "icon": "⭐", "titulo": "Nível: Fundamentos", "desc": "Entenda renda, despesa e o básico.", "offset": "translate-x-0",
     "licoes": [
       { "pergunta": "O que é renda e despesa", "opcoes": [{ "texto": "Renda é salário, despesa é gasto", "correta": true }, { "texto": "Renda é dívida", "correta": false }, { "texto": "Renda é prejuízo", "correta": false }] },
       { "pergunta": "Necessidade vs. desejo", "opcoes": [{ "texto": "Necessidade é essencial (moradia)", "correta": true }, { "texto": "Desejo é comida", "correta": false }, { "texto": "Ambos são essenciais", "correta": false }] },
@@ -9,7 +9,7 @@ const dadosMapa = [
       { "pergunta": "Primeiros passos para poupar", "opcoes": [{ "texto": "Guardar pelo menos 10%", "correta": true }, { "texto": "Gastar toda a renda", "correta": false }, { "texto": "Pedir dinheiro", "correta": false }] }
     ]
   },
-  { "id": 2, "icon": "📈", "titulo": "Controle 2", "desc": "Gatilhos de consumo e reserva.", "offset": "translate-x-12",
+  { "id": 2, "icon": "📈", "titulo": "Nível: Controle", "desc": "Gatilhos de consumo e reserva.", "offset": "translate-x-12",
     "licoes": [
       { "pergunta": "Compras por impulso", "opcoes": [{ "texto": "Planejar compras antecipadamente", "correta": true }, { "texto": "Comprar sem pensar", "correta": false }, { "texto": "Usar crédito sempre", "correta": false }] },
       { "pergunta": "Planejamento semanal", "opcoes": [{ "texto": "Definir limites de gasto", "correta": true }, { "texto": "Gastar sem limite", "correta": false }, { "texto": "Não controlar", "correta": false }] },
@@ -18,7 +18,7 @@ const dadosMapa = [
       { "pergunta": "Reduzir gasto desnecessário", "opcoes": [{ "texto": "Cancelar o que não usa", "correta": true }, { "texto": "Manter todas as assinaturas", "correta": false }, { "texto": "Gastar ainda mais", "correta": false }] }
     ]
   },
-  { "id": 3, "icon": "🛒", "titulo": "Consumo 3", "desc": "Preços, Cartão e Crédito.", "offset": "translate-x-20",
+  { "id": 3, "icon": "🛒", "titulo": "Nível: Consumo", "desc": "Preços, Cartão e Crédito.", "offset": "translate-x-20",
     "licoes": [
       { "pergunta": "Comparar preços", "opcoes": [{ "texto": "Pesquisar antes de comprar", "correta": true }, { "texto": "Comprar o primeiro", "correta": false }, { "texto": "Ignorar descontos", "correta": false }] },
       { "pergunta": "Impacto do Cartão de Crédito", "opcoes": [{ "texto": "Pode gerar dívidas se não pagar", "correta": true }, { "texto": "É dinheiro grátis", "correta": false }, { "texto": "Não cobra juros", "correta": false }] },
@@ -27,7 +27,7 @@ const dadosMapa = [
       { "pergunta": "Orçamento Familiar", "opcoes": [{ "texto": "Dividir despesas da casa", "correta": true }, { "texto": "Esconder dívidas", "correta": false }, { "texto": "Gastar sem avisar", "correta": false }] }
     ]
   },
-  { "id": 4, "icon": "💰", "titulo": "Investimentos", "desc": "Fazer o dinheiro render.", "offset": "translate-x-12",
+  { "id": 4, "icon": "💰", "titulo": "Nível: Investimentos", "desc": "Fazer o dinheiro render.", "offset": "translate-x-12",
     "licoes": [
       { "pergunta": "O que é investir?", "opcoes": [{ "texto": "Fazer o dinheiro render", "correta": true }, { "texto": "Comprar roupas", "correta": false }, { "texto": "Guardar no colchão", "correta": false }] },
       { "pergunta": "Poupança vs. Investimento", "opcoes": [{ "texto": "Poupança rende menos", "correta": true }, { "texto": "Poupança é o melhor", "correta": false }, { "texto": "São exatamente iguais", "correta": false }] },
@@ -36,7 +36,7 @@ const dadosMapa = [
       { "pergunta": "Meta de Investimento", "opcoes": [{ "texto": "Definir valor e prazo", "correta": true }, { "texto": "Gastar os lucros", "correta": false }, { "texto": "Investir sem objetivo", "correta": false }] }
     ]
   },
-  { "id": 5, "icon": "📅", "titulo": "Planejamento", "desc": "Metas e valor do tempo.", "offset": "translate-x-0",
+  { "id": 5, "icon": "📅", "titulo": "Nível: Planejamento", "desc": "Metas e valor do tempo.", "offset": "translate-x-0",
     "licoes": [
       { "pergunta": "Como definir metas?", "opcoes": [{ "texto": "Ter valor e data definidos", "correta": true }, { "texto": "Apenas sonhar", "correta": false }, { "texto": "Gastar tudo hoje", "correta": false }] },
       { "pergunta": "Planejamento Mensal", "opcoes": [{ "texto": "Organizar os próximos 30 dias", "correta": true }, { "texto": "Viver o hoje apenas", "correta": false }, { "texto": "Ignorar as despesas", "correta": false }] },
@@ -45,7 +45,7 @@ const dadosMapa = [
       { "pergunta": "O Valor do Tempo", "opcoes": [{ "texto": "Juros compostos premiam o tempo", "correta": true }, { "texto": "O tempo não importa", "correta": false }, { "texto": "O dinheiro desaparece", "correta": false }] }
     ]
   },
-  { "id": 6, "icon": "📝", "titulo": "Orçamento 6", "desc": "Fixas, variáveis e negociação.", "offset": "-translate-x-12",
+  { "id": 6, "icon": "📝", "titulo": "Nível: Orçamento", "desc": "Fixas, variáveis e negociação.", "offset": "-translate-x-12",
     "licoes": [
       { "pergunta": "Tipos de Despesas", "opcoes": [{ "texto": "Fixas (Aluguel) / Variáveis (Luz)", "correta": true }, { "texto": "Todas são fixas", "correta": false }, { "texto": "Lazer é sempre fixo", "correta": false }] },
       { "pergunta": "Cortar Supérfluos", "opcoes": [{ "texto": "Identificar desperdícios mensais", "correta": true }, { "texto": "Parar de comprar comida", "correta": false }, { "texto": "Aumentar os gastos", "correta": false }] },
@@ -54,7 +54,7 @@ const dadosMapa = [
       { "pergunta": "Pequenos Gastos", "opcoes": [{ "texto": "Muitos gastos pequenos somam muito", "correta": true }, { "texto": "Eles não fazem diferença", "correta": false }, { "texto": "Sempre ajudam a poupar", "correta": false }] }
     ]
   },
-  { "id": 7, "icon": "🔐", "titulo": "Segurança", "desc": "PIX e Fraudes Digitais.", "offset": "-translate-x-20",
+  { "id": 7, "icon": "🔐", "titulo": "Nível: Segurança", "desc": "PIX e Fraudes Digitais.", "offset": "-translate-x-20",
     "licoes": [
       { "pergunta": "Segurança no PIX", "opcoes": [{ "texto": "Nunca compartilhar as suas senhas", "correta": true }, { "texto": "Mandar foto do cartão", "correta": false }, { "texto": "Ignorar alertas do banco", "correta": false }] },
       { "pergunta": "Débito vs Crédito", "opcoes": [{ "texto": "Débito tira o dinheiro na hora", "correta": true }, { "texto": "Crédito é totalmente grátis", "correta": false }, { "texto": "São exatamente iguais", "correta": false }] },
@@ -63,7 +63,7 @@ const dadosMapa = [
       { "pergunta": "Juros Simples", "opcoes": [{ "texto": "Calculados sempre sobre o principal", "correta": true }, { "texto": "Juros em cima de juros", "correta": false }, { "texto": "Não existem", "correta": false }] }
     ]
   },
-  { "id": 8, "icon": "🏆", "titulo": "Futuro", "desc": "Inflação e Salário Líquido.", "offset": "-translate-x-12",
+  { "id": 8, "icon": "🏆", "titulo": "Nível: Futuro", "desc": "Inflação e Salário Líquido.", "offset": "-translate-x-12",
     "licoes": [
       { "pergunta": "Juros Compostos", "opcoes": [{ "texto": "Juros sobre o saldo já acumulado", "correta": true }, { "texto": "Juros sobre o valor inicial", "correta": false }, { "texto": "Sempre taxa zero", "correta": false }] },
       { "pergunta": "O que é Inflação?", "opcoes": [{ "texto": "Aumento contínuo dos preços", "correta": true }, { "texto": "Seu dinheiro valendo mais", "correta": false }, { "texto": "Queda geral de preços", "correta": false }] },
@@ -74,10 +74,8 @@ const dadosMapa = [
   }
 ];
 
-// --- NOVA CHAVE DE SAVE: FORÇA RESET PARA CORRIGIR BUGS DE CACHE ---
-const SAVE_KEY = 'corujinha_dados_v5';
+const SAVE_KEY = 'corujinha_dados_final_v2';
 
-// FORÇANDO OS VALORES INICIAIS: 0 diamantes e 5 de energia
 let estado = JSON.parse(localStorage.getItem(SAVE_KEY)) || { 
   nivel: 1, 
   licao: 0, 
@@ -129,24 +127,45 @@ function iniciarTimer(duracao) {
 function desenharMapa() {
   const container = document.getElementById('caminho-trilha');
   container.innerHTML = '';
+  
   dadosMapa.forEach(f => {
     const comp = f.id < estado.nivel;
     const curr = f.id === estado.nivel;
     const lock = f.id > estado.nivel;
     
-    let moedas = '<div class="flex gap-1 mt-2">';
+    let moedasHTML = '';
+    const imageUrl = "https://i.pinimg.com/736x/6e/28/24/6e28240cec08cf919cb87ffd6c281c5f.jpg";
+
+    const angulos = [155, 122.5, 90, 57.5, 25];
+    const raio = 65; 
+
     for(let i=0; i<5; i++) {
-      // REGRA: Pinta a moeda de dourado imediatamente após a lição ser concluída
-      let cor = (comp || (curr && i < estado.licao)) ? "bg-[#F4C542] border-[#d4a522]" : "bg-[#BCA6D3] border-[#7A5CA0]";
-      moedas += `<div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border ${cor} transition-colors duration-300"></div>`;
+      const isComplete = (comp || (curr && i < estado.licao));
+      
+      let classStatus = isComplete 
+        ? "mix-blend-multiply opacity-100" 
+        : "mix-blend-multiply grayscale opacity-40";
+
+      let anguloRad = angulos[i] * Math.PI / 180;
+      let x = Math.cos(anguloRad) * raio;
+      let y = Math.sin(anguloRad) * raio;
+
+      moedasHTML += `
+        <img src="${imageUrl}" 
+             class="absolute w-7 h-7 sm:w-8 sm:h-8 object-cover rounded-full transition-all duration-300 ${classStatus}" 
+             style="left: calc(50% + ${x}px); top: calc(50% + ${y}px); transform: translate(-50%, -50%); z-index: 0;" 
+             alt="Moeda da Lição">`;
     }
-    moedas += '</div>';
 
     container.insertAdjacentHTML('beforeend', `
-      <div class="relative w-full flex justify-center py-3">
-        <div class="${f.offset} flex flex-col items-center">
-          <button onclick="abrirGaveta(${f.id})" class="circulo-fase w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 ${lock?'fase-bloqueada':comp?'fase-concluida':'fase-atual'} text-xl sm:text-2xl flex items-center justify-center">${lock?'🔒':comp?'✔️':f.icon}</button>
-          ${moedas}
+      <div class="relative w-full flex justify-center py-8 sm:py-12">
+        <div class="${f.offset} relative flex justify-center items-center">
+          ${moedasHTML}
+          <button onclick="abrirGaveta(${f.id})" 
+                  class="circulo-fase w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 ${lock?'fase-bloqueada':comp?'fase-concluida':'fase-atual'} text-2xl sm:text-3xl flex items-center justify-center relative" 
+                  style="z-index: 10;">
+            ${lock?'🔒':comp?'✔️':f.icon}
+          </button>
         </div>
       </div>`);
   });
@@ -154,7 +173,7 @@ function desenharMapa() {
 
 function abrirGaveta(id) {
   if (id > estado.nivel) {
-    alert("🔒 Nível Bloqueado!\n\nVocê precisa completar todas as 5 lições do nó atual para liberar esta fase.");
+    alert("🔒 Nível Bloqueado!\n\nVocê precisa completar todas as 5 lições do nível atual para liberar esta fase.");
     return;
   }
   
@@ -181,7 +200,6 @@ function renderizar() {
   document.getElementById('energia-licao').innerText = estado.energia;
   document.getElementById('botao-acao-licao').disabled = true;
   
-  // NOVA REGRA: Cria uma cópia das opções e embaralha aleatoriamente!
   const opcoesEmbaralhadas = [...l.opcoes].sort(() => Math.random() - 0.5);
 
   document.getElementById('area-pergunta').innerHTML = `
@@ -204,16 +222,27 @@ function avancarLicao() {
   const o = document.getElementById('aviso-resultado'), i = document.getElementById('icone-resultado'), t = document.getElementById('titulo-resultado'), b = document.getElementById('botao-continuar-resultado');
   
   if (selecionada) {
-    // ACERTOU
     o.className = "gaveta-baixo bg-[#d7ffb8] text-[#58a700] p-6 pb-10 visivel";
     i.innerHTML = "✓"; i.className = "w-12 h-12 rounded-full flex items-center justify-center bg-[#58cc02] text-white";
     t.innerText = "Excelente!"; b.className = "botao-3d w-full py-3.5 rounded-2xl font-black text-white bg-[#58cc02]";
+    
     b.onclick = () => {
       o.classList.remove('visivel');
       
       if (faseId === estado.nivel) { 
           estado.licao++; 
           if (estado.licao >= 5) {
+            let titulo = document.getElementById('titulo-sucesso');
+            let recompensa = document.getElementById('texto-recompensa');
+            
+            if (faseId % 4 === 0) {
+                let etapa = (faseId === 4) ? "Básico" : (faseId === 8) ? "Médio" : "Avançado";
+                titulo.innerText = `Parabéns! Aprendizado ${etapa} Concluído!`;
+                recompensa.innerHTML = "+1 Diamante 💎";
+            } else {
+                titulo.innerText = "Parabéns! Nível Concluído!";
+                recompensa.innerHTML = "Continue avançando!"; 
+            }
             mudarTela('tela-sucesso'); 
           } else {
             mudarTela('tela-mapa');
@@ -224,7 +253,6 @@ function avancarLicao() {
       salvar();
     };
   } else {
-    // ERROU
     estado.energia--; 
     if (estado.energia <= 0) estado.ultimaPerda = new Date().getTime();
     salvar(); atualizarTopo();
@@ -249,11 +277,12 @@ function fecharAvisoEnergia() { document.getElementById('aviso-energia').classLi
 function fecharGaveta() { document.getElementById('fundo-escuro').classList.remove('visivel'); document.getElementById('gaveta-mapa').classList.remove('visivel'); }
 function sairDaLicao() { mudarTela('tela-mapa'); }
 
-// REGRA: AQUI O ALUNO GANHA O DIAMANTE (+1)
 function finalizarFase() { 
+  if (estado.nivel % 4 === 0) {
+      estado.gemas += 1;
+  }
   estado.nivel++; 
   estado.licao = 0; 
-  estado.gemas += 1; 
   salvar(); 
   mudarTela('tela-mapa'); 
 }
@@ -267,5 +296,4 @@ function verAnuncio() {
   }, 1000); 
 }
 
-// Inicia o app
 mudarTela('tela-inicio');
